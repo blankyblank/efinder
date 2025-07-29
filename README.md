@@ -4,6 +4,15 @@ A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
+<img width="1920" height="1080" alt="Jul-Tue-29-04:51" src="https://github.com/user-attachments/assets/3d4594d9-4180-4153-9dd2-a7e3d8913368" />
+
+<img width="1920" height="1080" alt="Jul-Tue-29-04:56" src="https://github.com/user-attachments/assets/e2ec1291-f049-4466-9db5-d26b1c183202" />
+
+
+<img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />
+
+
+
 Default with no options it will emerge packages, with -d it will deselect them.
 
 You can use tab to select multiple, then press enter.
