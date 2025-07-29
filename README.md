@@ -16,7 +16,11 @@ Change it to show use flags with alt-u.
 It shows use flags by default in emerge mode, and dependencies by default
 in deselect mode.
 
+Dependencies:
 
+fzf (it is a fzf script after all)
+gentoolkit needed for the use flag preview.
+eix used for viewing the world file.
 
 To install it either git clone the repo
 ```
