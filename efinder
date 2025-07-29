@@ -14,7 +14,7 @@ FZF_DEFAULT_OPTS="--no-sort -m --reverse --cycle --ansi --wrap --wrap-sign='' --
   --padding=0% --border=sharp --border-label-pos=24 --input-border=sharp --list-border=sharp \
   --preview-border=none --preview-label='Package Info' --preview-window 'top,35%' --preview='equery -N u -i {1}' \
   --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'  \
-  --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdQ --color {1}' \
+  --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}' \
   --bind 'alt-p:toggle-preview' --bind 'alt-space:change-preview-window(right,40%|)' "
 
 HISTORY=$HOME/.local/state/efzf
@@ -58,7 +58,7 @@ emerge_finder() {
 
 deselect_finder() {
   local pkgpick=$(eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>' | fzf \
-      --preview='qdepends -qdQ --color {1}' --gap=0  --delimiter : -n 1 --accept-nth=1)
+      --preview='qdepends -qdrpbIQ --color {1}' --gap=0  --delimiter : -n 1 --accept-nth=1)
   if [ -z "$pkgpick" ]; then
     exit
   else
