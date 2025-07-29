@@ -1,0 +1,82 @@
+#!/bin/sh
+
+set -e
+set -u
+
+export NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
+<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
+(%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
+EIX_LIMIT=0 
+
+FZF_DEFAULT_OPTS="--no-sort -m --reverse --cycle --ansi --wrap --wrap-sign='' --gap=1 \
+  --info=inline-right --no-separator --pointer='>' --prompt='$ ' --marker='+' --margin=0%,0%,0% \
+  --padding=0% --border=sharp --border-label-pos=24 --input-border=sharp --list-border=sharp \
+  --preview-border=none --preview-label='Package Info' --preview-window 'top,35%' --preview='equery -N u -i {1}' \
+  --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'  \
+  --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdQ --color {1}' \
+  --bind 'alt-p:toggle-preview' --bind 'alt-space:change-preview-window(right,40%|)' "
+
+HISTORY=$HOME/.local/state/efzf
+
+usage() {
+  echo "available options are \n \
+  none : to interactively search for files in the portage tree to emerge and \n \
+  -d   : to interactively search for files in your world file to deselect \n
+  -h   : to show a help message \n"
+}
+
+help_mgs() {
+  echo "   This is an interactive fuzzy finder for portage. \n \
+  Ran with no options it will open a finder letting \n \
+  you search through the packages available in the portage tree.\n \n \
+  If you use the -d flag it will show the packages in your world file\n \
+  and let you choose ones to deselect.\n \n \
+  In the emerge script the default preview for the highlighted package \n \
+  will show you its available use flags. \n \
+  In the deselect script, the default preview will show the the package's \n \n \
+  dependencies. \n \n \
+  You can selected multiple packages in either mode with the tab key \n \
+  then press enter to emerge, or --deslect the chosen packages. \n \n \
+  It uses all the normal fzf key binds with a few extras added.\n \
+  alt-p     : will toggle the preview window \n \
+  alt-space : will toggle the preview position \n \
+  alt-u     : will show use flags in the preview window\n \
+  alt-d     : will show dependencies in the preview window \n"
+}
+
+emerge_finder() {
+
+   local pkgpick=$(qsearch --color -a | fzf  --delimiter : -n 1 --accept-nth=1 ) 
+
+  if [ -z "$pkgpick" ]; then
+    exit
+  else
+    sudo emerge -v $(echo "$pkgpick")
+  fi
+}
+
+deselect_finder() {
+  local pkgpick=$(eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>' | fzf \
+      --preview='qdepends -qdQ --color {1}' --gap=0  --delimiter : -n 1 --accept-nth=1)
+  if [ -z "$pkgpick" ]; then
+    exit
+  else
+    sudo emerge --ask --deselect $(echo -n "$pkgpick")
+  fi
+}
+
+no_args=0
+while getopts "dh" flag; do
+  case $flag in
+    d) deselect_finder ;;
+    h) help_mgs ; exit ;;
+    ?) usage ; exit ;;
+  esac
+  no_args=1
+done
+if [ -z "$no_args" ]; then
+  { usage; exit 1; }
+else
+  emerge_finder
+fi
