@@ -22,7 +22,7 @@ HISTORY=$HOME/.local/state/efzf
 usage() {
   echo "available options are \n \
   none : to interactively search for files in the portage tree to emerge and \n \
-  -d   : to interactively search for files in your world file to deselect \n
+  -d   : to interactively search for files in your world file to deselect \n \
   -h   : to show a help message \n"
 }
 
