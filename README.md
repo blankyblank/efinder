@@ -17,11 +17,30 @@ It shows use flags by default in emerge mode, and dependencies by default
 in deselect mode.
 
 
+Usage:
+```
+efinder
+```
+for deselect
+```
+efinder -d
+```
+for a help message with the extra keybinds
+```
+efinder -h
+```
+
+I will probably add some information about other useful things that are in defaults in fzf that are useful
+in this script a bit later. For those not familiar with fzf. For now the fzf repo and man page have a ton
+of useful information.
+
+https://github.com/junegunn/fzf
+
 Dependencies:
 
 - fzf (it is a fzf script after all)
-- gentoolkit needed for the use flag preview.
-- eix used for viewing the world file.
+- gentoolkit (needed for the use flag preview.)
+- eix (used for viewing the world file.)
 
 
 To install it either git clone the repo
