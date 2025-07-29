@@ -19,31 +19,38 @@ in deselect mode.
 
 
 To install it either git clone the repo
+```
 git clone https://github.com/blankyblank/efinder.git
+```
 
 Or download the efinder file.
 
 If you cloned it, change directories to where you cloned it with 
 cd efinder
 
-Make it executable with 
+Make it executable with
+```
 chmod +x efinder
-
+```
 Then add it somewhere on your path. My recommendation is:
 
 If it doesn't already exist
-
+```
 mkdir ~/.local/bin
-
+```
 Add to your .bash_profile, or .bashrc (or whatever shell you use.)
+
+```
 PATH=$PATH/"$HOME"/.local/bin
+```
 
 Then move efinder to that directory.
+```
 mv efinder ~/.local/bin
-
+```
 If you git cloned it you can make a symlink to it.
 You will use the full path to the efinder script. So if it's currently in
 your home direcory in the cloned git repo
-
+```
 ln -s ~/efinder/efinder ~/.local/bin/
-
+```
