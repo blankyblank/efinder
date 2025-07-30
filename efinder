@@ -47,7 +47,7 @@ help_mgs() {
 
 emerge_finder() {
 
-   local pkgpick=$(qsearch --color -a | fzf  --delimiter : -n 1 --accept-nth=1 ) 
+   local pkgpick=$(qsearch --color -a | fzf  --delimiter : -n 1 --accept-nth=1 )
 
   if [ -z "$pkgpick" ]; then
     exit
@@ -76,7 +76,7 @@ while getopts "dh" flag; do
   no_args=1
 done
 if [ -z "$no_args" ]; then
-  { usage; exit 1; }
+  { usage >&2; exit 1; }
 else
   emerge_finder
 fi
