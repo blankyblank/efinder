@@ -4,19 +4,20 @@ A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
-  Launced in emerge mode.   
+---
+  Launced in emerge mode:  
 
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:51" src="https://github.com/user-attachments/assets/3d4594d9-4180-4153-9dd2-a7e3d8913368" />   
 
-
-  With the preview on the right   
+---
+  With the preview on the right:   
 
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:56" src="https://github.com/user-attachments/assets/e2ec1291-f049-4466-9db5-d26b1c183202" />   
 
-
-  Launched in deselect mode.   
+---
+  Launched in deselect mode:
 
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
@@ -69,8 +70,11 @@ git clone https://github.com/blankyblank/efinder.git
 
 Or download the efinder file.
 
-If you cloned it, change directories to where you cloned it with 
+If you cloned it, change directories to where you cloned it with
+
+```
 cd efinder
+```
 
 Make it executable with
 ```
@@ -85,7 +89,7 @@ mkdir ~/.local/bin
 Add to your .bash_profile, or .bashrc (or whatever shell you use.)
 
 ```
-PATH=$PATH/"$HOME"/.local/bin
+PATH=$PATH:"$HOME"/.local/bin
 ```
 
 Then move efinder to that directory.
