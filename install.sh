@@ -71,6 +71,4 @@ while getopts "iu" flag; do
 done
 if [ -z "$no_args" ]; then
   { usage >&2; exit 1; }
-else
-  usage
 fi

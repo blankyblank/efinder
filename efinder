@@ -71,7 +71,7 @@ deselect_finder() {
 no_args=0
 while getopts "dh" flag; do
   case $flag in
-    d) deselect_finder ;;
+    d) deselect_finder && exit 0 ;;
     h) help_mgs ; exit ;;
     ?) usage ; exit ;;
   esac
