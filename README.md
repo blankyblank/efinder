@@ -8,13 +8,13 @@ to deselect.
   Launced in emerge mode:  
 
 
-<img width="1920" height="1080" alt="Jul-Tue-29-04:51" src="https://github.com/user-attachments/assets/3d4594d9-4180-4153-9dd2-a7e3d8913368" />   
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ae05839-8473-488e-8b79-132a5b8dba6d" />
+
 
 ---
   With the preview on the right:   
 
-
-<img width="1920" height="1080" alt="Jul-Tue-29-04:56" src="https://github.com/user-attachments/assets/e2ec1291-f049-4466-9db5-d26b1c183202" />   
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5913d065-a210-46d5-9310-01313f486e25" />
 
 ---
   Launched in deselect mode:
@@ -27,6 +27,7 @@ to deselect.
 Default with no options it will emerge packages, with -d it will deselect them.  
 
 You can use tab to select multiple, then press enter.
+To exit without selecting anything to emerge, or deselect press Escape.
 
 Toggle the preview window with alt-p. 
 Toggle the preview window position with alt-space.
@@ -60,12 +61,48 @@ Dependencies:
 
 - fzf (it is a fzf script after all)
 - gentoolkit (needed for the use flag preview.)
-- eix (used for viewing the world file.)
+- eix (used to show packages in the portage tree, and world file.)
 
+Using the install.sh for installation.
+
+***
+
+First git clone the repo wherever you would like to my suggestion is ~/.local/src
+```
+$ git clone https://github.com/blankyblank/efinder.git
+```
+```
+$ cd efinder
+```
+to install it as a normal user.
+```
+$ ./install.sh -i
+```
+then add .local/bin to your path, in your shell config file like so
+~/.bashrc
+```
+PATH=$PATH:"$HOME"/.local/bin
+```
+To install it system wide you just need to use sudo and it will be placed in /usr/local/bin
+```
+$ sudo ./install.sh -i
+```
+To uninstall 
+```
+$ ./install.sh -u
+```
+or systemwide
+```
+$ sudo ./install.sh -u
+```
+
+Manual installation
+
+***
 
 To install it either git clone the repo
 ```
-git clone https://github.com/blankyblank/efinder.git
+$ git clone https://github.com/blankyblank/efinder.git
 ```
 
 Or download the efinder file.
@@ -73,18 +110,18 @@ Or download the efinder file.
 If you cloned it, change directories to where you cloned it with
 
 ```
-cd efinder
+$ cd efinder
 ```
 
 Make it executable with
 ```
-chmod +x efinder
+$ chmod +x efinder
 ```
 Then add it somewhere on your path. My recommendation is:
 
 If it doesn't already exist
 ```
-mkdir ~/.local/bin
+$ mkdir ~/.local/bin
 ```
 Add to your .bash_profile, or .bashrc (or whatever shell you use.)
 
@@ -94,11 +131,11 @@ PATH=$PATH:"$HOME"/.local/bin
 
 Then move efinder to that directory.
 ```
-mv efinder ~/.local/bin
+$ mv efinder ~/.local/bin
 ```
 If you git cloned it you can make a symlink to it.
 You will use the full path to the efinder script. So if it's currently in
 your home direcory in the cloned git repo
 ```
-ln -s ~/efinder/efinder ~/.local/bin/
+$ ln -s ~/efinder/efinder ~/.local/bin/
 ```
