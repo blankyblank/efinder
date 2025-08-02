@@ -43,10 +43,11 @@ usage() {
   echo "available options are \n \
   none : to interactively search for files in the portage tree to emerge and \n \
   -d   : to interactively search for files in your world file to deselect \n \
-  -h   : to show a help message \n"
+  -h   : to show a help message \n" >&2
+  exit 1
 }
 
-help_mgs() {
+help_msg() {
   echo "   This is an interactive fuzzy finder for portage. \n \
   Ran with no options it will open a finder letting \n \
   you search through the packages available in the portage tree.\n \n \
@@ -65,19 +66,20 @@ help_mgs() {
   alt-d     : will show dependencies in the preview window \n \
   alt-h     : will show Upstream info in the preview window \n \
   Escape    : if you want to exit without emerging anything \n"
+  exit
 }
-#cut -d ] -f 2
-emerge_finder() {
 
+emerge_finder() {
   EIX_LIMIT_COMPACT=0
-   #local pkgpick=$(qsearch --color -a | fzf --list-label='  Portage Tree  ')
-   local pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
+
+  local pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
 
   if [ -z "$pkgpick" ]; then
     exit
   else
     sudo emerge -v $(echo "$pkgpick")
   fi
+  exit
 }
 
 deselect_finder() {
@@ -88,19 +90,17 @@ deselect_finder() {
   else
     sudo emerge --ask --deselect $(echo -n "$pkgpick")
   fi
+  exit
 }
 
-no_args=0
 while getopts "dh" flag; do
   case $flag in
     d) deselect_finder && exit 0 ;;
-    h) help_mgs ; exit ;;
-    ?) usage ; exit ;;
+    h) help_msg && exit 0 ;;
+    \?) usage ;;
   esac
-  no_args=1
 done
-if [ -z "$no_args" ]; then
-  { usage >&2; exit 1; }
-else
+
+if [ -n "$OPTIND" ]; then
   emerge_finder
 fi
