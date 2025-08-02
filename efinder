@@ -2,12 +2,31 @@
 
 set -e
 set -u
+set -a
 
-export NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+EIX_LIMIT=0 
+EIX_LIMIT_COMPACT=0
+BG0=none;
+BG1=none;
+BG2=none;
+BG3=none;
+COLORSCHEME0=0;
+COLORSCHEME1=0;
+COLORSCHEME2=0;
+COLORSCHEME3=0;
+
+FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
+<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
+(%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}): {*modus=compact}(%{COLOR_NORMAL})\\((%{COLOR_NORMAL_END})\
+{havemarkedversion}<markedversions:MARKEDVERSION>; {}{installed}%{INSTALLEDVERSIONS_COMPACT}\
+{recommend} -> %{FORMAT_BEST_CHANGE}{}{else}%{FORMAT_BEST_COMPACT}{}(%{COLOR_NORMAL})\\) \
+<description>(%{COLOR_NORMAL_END})%{FORMAT_FINISH}"
+
+NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
 (%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
 <category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
 (%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
-EIX_LIMIT=0 
 
 FZF_DEFAULT_OPTS="--no-sort -m --reverse --cycle --ansi --wrap --scroll-off=20 --no-separator \
   --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
@@ -44,12 +63,15 @@ help_mgs() {
   alt-space : will toggle the preview position \n \
   alt-u     : will show use flags in the preview window\n \
   alt-d     : will show dependencies in the preview window \n \
-  alt-h     : will show Upstream info in the preview window \n"
+  alt-h     : will show Upstream info in the preview window \n \
+  Escape    : if you want to exit without emerging anything \n"
 }
-
+#cut -d ] -f 2
 emerge_finder() {
 
-   local pkgpick=$(qsearch --color -a | fzf --list-label='  Portage Tree  ')
+  EIX_LIMIT_COMPACT=0
+   #local pkgpick=$(qsearch --color -a | fzf --list-label='  Portage Tree  ')
+   local pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
 
   if [ -z "$pkgpick" ]; then
     exit
