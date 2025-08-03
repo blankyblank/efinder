@@ -1,10 +1,13 @@
 # efinder
 
+<br>
+
 A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
-***
+<br>
+
 <br>
 
   Launced in emerge mode:  
@@ -63,8 +66,7 @@ Change it to show use flags with alt-u.
 It shows use flags by default in emerge mode, and dependencies by default
 in deselect mode.
 
-
-***
+<br>
 
 ## fzf tips.
 
@@ -123,8 +125,8 @@ And it will search for i3lock along with our first search like so:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/69365cee-0f00-48ad-9f78-40bf166015dc" />
 
-***
 <br><br>
+
 Here are some useful keybinds built into fzf.
 
 If you like using vim like motions you can move up and down with
@@ -153,9 +155,7 @@ information scattered across the web. I highly recommend at least checking out f
 
 [The fzf project](https://github.com/junegunn/fzf)
 
-
-***
-
+<br><br>
 
 ## Installation
 
