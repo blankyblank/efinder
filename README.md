@@ -23,7 +23,7 @@ to deselect.
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
 
-# Usage
+## Usage
 <br>
 
 When launched by default with no options it will emerge packages, with -u it will deselect them from your world file.  
@@ -66,7 +66,7 @@ in deselect mode.
 
 ***
 
-# fzf tips.
+## fzf tips.
 
 When you have efinder open to change the way fzf searches you can use a few different methods.
 
@@ -157,7 +157,7 @@ information scattered across the web. I highly recommend at least checking out f
 ***
 
 
-# Installation
+## Installation
 
 Dependencies:
 
@@ -165,9 +165,11 @@ Dependencies:
 - gentoolkit (needed for the use flag preview.)
 - eix (used to show packages in the portage tree, and world file.)
 
-Using the install.sh for installation.
+<br>
 
-***
+### Using the install.sh for installation.
+
+<br>
 
 First git clone the repo wherever you would like to my suggestion is ~/.local/src
 ```
@@ -197,10 +199,11 @@ or systemwide
 ```
 $ sudo ./install.sh -u
 ```
+<br>
 
-Manual installation
+### Manual installation
 
-***
+<br>
 
 To install it either git clone the repo
 ```
