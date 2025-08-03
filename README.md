@@ -4,25 +4,27 @@ A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
----
+***
   Launced in emerge mode:  
 
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ae05839-8473-488e-8b79-132a5b8dba6d" />
 
 
----
+***
   With the preview on the right:   
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5913d065-a210-46d5-9310-01313f486e25" />
 
----
+***
   Launched in deselect mode:
 
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
 
----
+# Usage
+
+***
 
 Default with no options it will emerge packages, with -d it will deselect them.  
 
@@ -39,16 +41,22 @@ in deselect mode.
 
 
 Usage:
+To search through the packages available in your portage tree.
 ```
-efinder
+$ efinder
 ```
-for deselect
+To search through the packages available in your portage tree, searching by description.
 ```
-efinder -d
+$ efinder -d
+```
+To look through your world file for packages to deselect 
+(or just search through your world file if you press escape it exits)
+```
+$ efinder -u
 ```
 for a help message with the extra keybinds
 ```
-efinder -h
+$ efinder -h
 ```
 
 I will probably add some information about other useful things that are in defaults in fzf that are useful
@@ -56,6 +64,14 @@ in this script a bit later. For those not familiar with fzf. For now the fzf rep
 of useful information.
 
 [The fzf project](https://github.com/junegunn/fzf)
+
+# Useful fzf tips.
+
+
+***
+
+
+# Installation
 
 Dependencies:
 
