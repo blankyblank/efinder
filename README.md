@@ -178,6 +178,10 @@ $ git clone https://github.com/blankyblank/efinder.git
 ```
 $ cd efinder
 ```
+If you want to use a stable release instead of the main branch.
+```
+$ git checkout v0.1beta
+```
 to install it as a normal user.
 ```
 $ ./install.sh -i
@@ -216,6 +220,10 @@ If you cloned it, change directories to where you cloned it with
 
 ```
 $ cd efinder
+```
+If you want to use a stable release instead of the main branch.
+```
+$ git checkout v0.1beta
 ```
 
 Make it executable with
