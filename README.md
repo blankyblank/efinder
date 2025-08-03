@@ -24,7 +24,6 @@ to deselect.
 
 # Usage
 
-***
 
 Default with no options it will emerge packages, with -d it will deselect them.  
 
@@ -65,8 +64,20 @@ of useful information.
 
 [The fzf project](https://github.com/junegunn/fzf)
 
+***
+
 # Useful fzf tips.
 
+When you have efinder open to change the way fzf searches you can use a few different methods.
+
+By quoting a string you will enable exact-match mode.
+Meaning if you quote your search it will search for that exact string instead of fuzzy searching.
+like so 
+```
+$ 'dwm
+```
+Adding the single quote can be especially useful for short strings like this. 
+Because otherwise it might not narrow the results down enough.
 
 ***
 
