@@ -26,19 +26,7 @@ to deselect.
 # Usage
 <br>
 
-When launched by default with no options it will emerge packages, with -d it will deselect them from your world file.  
-
-You can use tab to select multiple packages, then press enter.
-To exit without selecting anything to emerge, or deselect press Escape.
-
-Toggle the preview window with alt-p. 
-Toggle the preview window position with alt-space.
-Change the preview window to show dependencies with alt-d
-Change it to show use flags with alt-u.
-
-It shows use flags by default in emerge mode, and dependencies by default
-in deselect mode.
-
+When launched by default with no options it will emerge packages, with -u it will deselect them from your world file.  
 
 Usage:
 To search through the packages available in your portage tree.
@@ -59,10 +47,26 @@ for a help message with the extra keybinds
 $ efinder -h
 ```
 
+Keybinds:
+
+You can use tab to select multiple packages, then press enter.
+To exit without selecting anything to emerge, or deselect press Escape.
+
+Toggle the preview window with alt-p. 
+
+Toggle the preview window position with alt-space.
+
+Change the preview window to show dependencies with alt-d
+
+Change it to show use flags with alt-u.
+
+It shows use flags by default in emerge mode, and dependencies by default
+in deselect mode.
+
 
 ***
 
-# Useful fzf tips.
+# fzf tips.
 
 When you have efinder open to change the way fzf searches you can use a few different methods.
 
