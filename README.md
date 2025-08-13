@@ -1,52 +1,41 @@
 # efinder
 
-<br>
-
 A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
-<br>
+## Launced in emerge mode:  
 
-<br>
-
-  Launced in emerge mode:  
-<br>
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ae05839-8473-488e-8b79-132a5b8dba6d" />
 
-<br><br>
-  With the preview on the right:
-<br><br>
+## With the preview on the right:
+
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5913d065-a210-46d5-9310-01313f486e25" />
 
-<br><br>
-  Launched in deselect mode:
-<br>
-
+## Launched in deselect mode:
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
 
 ## Usage
-<br>
 
 When launched by default with no options it will emerge packages, with -u it will deselect them from your world file.  
 
 Usage:
 To search through the packages available in your portage tree.
-```
+```bash
 $ efinder
 ```
 To search through the packages available in your portage tree, searching by description.
-```
+```bash
 $ efinder -d
 ```
 To look through your world file for packages to deselect 
 (or just search through your world file if you press escape it exits)
-```
+```bash
 $ efinder -u
 ```
 for a help message with the extra keybinds
-```
+```bash
 $ efinder -h
 ```
 
@@ -87,7 +76,7 @@ In this case it instead of getting results like these.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/58c73399-0487-4cca-8eb6-adfeb5dc885a" />
 
-<br><br>
+<br>
 
 You narrow down the results to just those directly matching like so:
 
@@ -95,7 +84,7 @@ You narrow down the results to just those directly matching like so:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ff89f494-f6f2-4c95-974a-d16dd21344d4" />
 
-<br><br>
+<br>
 
 To add another example of how to modify search results. You can use an exclamation mark to exclude results matching what comes after it.
 So if you were to add this, to the search in the above example.
@@ -109,7 +98,8 @@ $ !sec
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/30b1e113-dd21-40a2-9200-5aa6f8013072" />
 
-<br><br>
+<br>
+
 You can see now that line is no longer showing up as a result.
 
 Something else that can be useful is the "or" opperator. Which is this pipe symbol "|"
@@ -125,7 +115,7 @@ And it will search for i3lock along with our first search like so:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/69365cee-0f00-48ad-9f78-40bf166015dc" />
 
-<br><br>
+<br>
 
 Here are some useful keybinds built into fzf.
 
@@ -149,13 +139,14 @@ Or to select something to either emerge or remove from your world file, you can 
 
 Of if you have chosen multiple them pressing enter after you have selected those with tab.
 
-<br><br>
+<br>
+
 There is a lot more useful information in the man page for fzf. And even more useful information on FZF's github page. And even more
 information scattered across the web. I highly recommend at least checking out fzf's repo if not the manpage also.
 
 [The fzf project](https://github.com/junegunn/fzf)
 
-<br><br>
+<br>
 
 ## Installation
 
