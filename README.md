@@ -4,15 +4,15 @@ A script using fzf on Gentoo, to search the available packages in your portage
 tree and install them. Or search your world file, and pick packages 
 to deselect.
 
-## Launced in emerge mode:  
+### Launced in emerge mode:  
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ae05839-8473-488e-8b79-132a5b8dba6d" />
 
-## With the preview on the right:
+### With the preview on the right:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5913d065-a210-46d5-9310-01313f486e25" />
 
-## Launched in deselect mode:
+### Launched in deselect mode:
 
 <img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
 
@@ -39,7 +39,14 @@ for a help message with the extra keybinds
 $ efinder -h
 ```
 
-Keybinds:
+when searching for packages in the portage tree, you can tell if a package is installed or not.
+They will have the version highlighted, and show the date they were emerged like ffmpeg here.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3ea46f97-c91b-46bd-9418-e9df7eae8a5e" />
+
+<br>
+
+### Keybinds:
 
 You can use tab to select multiple packages, then press enter.
 To exit without selecting anything to emerge, or deselect press Escape.
@@ -56,7 +63,7 @@ It shows use flags by default in emerge mode, and dependencies by default
 in deselect mode.
 
 <br>
-
+   
 ## fzf tips.
 
 When you have efinder open to change the way fzf searches you can use a few different methods.
