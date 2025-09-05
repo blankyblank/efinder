@@ -1,21 +1,22 @@
 #!/bin/sh
+# shellcheck disable=2116
+# shellcheck disable=2046
 
 set -e
 set -u
-set -a
 
-EIX_LIMIT=0 
-EIX_LIMIT_COMPACT=0
-BG0=none;
-BG1=none;
-BG2=none;
-BG3=none;
-COLORSCHEME0=0;
-COLORSCHEME1=0;
-COLORSCHEME2=0;
-COLORSCHEME3=0;
+export EIX_LIMIT=0
+export EIX_LIMIT_COMPACT=0
+export BG0=none;
+export BG1=none;
+export BG2=none;
+export BG3=none;
+export COLORSCHEME0=0;
+export COLORSCHEME1=0;
+export COLORSCHEME2=0;
+export COLORSCHEME3=0;
 
-FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+export FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
 (%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
 <category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
 (%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}): {*modus=compact}(%{COLOR_NORMAL})\\((%{COLOR_NORMAL_END})\
@@ -23,12 +24,12 @@ FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CA
 {recommend} -> %{FORMAT_BEST_CHANGE}{}{else}%{FORMAT_BEST_COMPACT}{}(%{COLOR_NORMAL})\\) \
 <description>(%{COLOR_NORMAL_END})%{FORMAT_FINISH}"
 
-NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+export NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
 (%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
 <category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
 (%{COLOR_WORLD_SETS}){else}(bold;underline){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
 
-FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
+export FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
   --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
   --margin=0% --padding=0% --border=sharp --border-label-pos=24 --input-border=rounded --list-border=sharp \
   --preview-border=none --preview-label='Package Info' --preview-window 'top,35%' --preview='equery -N u -i {1}' \
@@ -37,53 +38,64 @@ FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 -
   --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery m -U {1}' \
   --bind 'alt-space:change-preview-window(right,40%|)' "
 
-HISTORY=$HOME/.local/state/efzf
+export HISTORY="$HOME"/.local/state/efzf
 
 usage() {
-  echo "available options are \n \
-  none : to interactively search for packages in the portage tree to emerge \n \
-  -d   : to interactively search for packages by description in the portage tree to emerge \n \
-  -u   : to interactively search for packages in your world file to deselect \n \
-  -h   : to show a help message \n" >&2
+  echo "invalid flag(s): $OPTARG"
+  echo "usgage: efinder <option>"
+  echo "available options are"
+  echo "none : to interactively search for packages in the portage tree to emerge"
+  echo "-d   : to interactively search for packages by description in the portage tree to emerge"
+  echo "-u   : to interactively search for packages in your world file to deselect"
+  echo "-h   : to show a help message"
   exit 1
 }
 
 help_msg() {
-  echo "   This is an interactive fuzzy finder for portage. \n \
-  Ran with no options it will open a finder letting \n \
-  you search through the packages available in the portage tree.\n \n \
-  If you use the -u flag it will show the packages in your world file\n \
-  and let you choose ones to deselect.\n \n \
-  In the emerge script the default preview for the highlighted package \n \
-  will show you its available use flags. \n \
-  In the deselect script, the default preview will show the the package's \n \n \
-  dependencies. \n \n \
-  You can selected multiple packages in either mode with the tab key \n \
-  then press enter to emerge, or --deslect the chosen packages. \n \n \
-  It uses all the normal fzf key binds with a few extras added.\n \
-  alt-p     : will toggle the preview window \n \
-  alt-space : will toggle the preview position \n \
-  alt-u     : will show use flags in the preview window\n \
-  alt-d     : will show dependencies in the preview window \n \
-  alt-h     : will show Upstream info in the preview window \n \
-  Escape    : if you want to exit without emerging anything \n \n \
-  Available flags: \n \
-  none : to interactively search for files in the portage tree to emerge \n \
-  -d   : to interactively search for files by description in the portage tree to emerge \n \
-  -u   : to interactively search for files in your world file to deselect \n \
-  -h   : to show this help message \n" >&2
+  cat << HERE_EOF
+  This is an interactive fuzzy finder for portage.
+
+  With no options it will open a finder letting
+  you search through the packages available in the portage tree.
+
+  If you use the -u flag it will show the packages in your world file.
+  The chosen packages will be removed from the world file by emerge.
+
+  In the emerge script the default preview shows the use flags for the
+  currently selected package.
+  In the deselect script, the default preview will show the the package's
+  dependencies.
+
+  You can selected multiple packages in either mode with the tab key
+  then press enter to emerge, or --deslect the chosen packages.
+
+  It uses all the normal fzf key binds with a few extras added.
+  alt-p     : will toggle the preview window
+  alt-space : will toggle the preview position
+  alt-u     : will show use flags in the preview window
+  alt-d     : will show dependencies in the preview window
+  alt-h     : will show Upstream info in the preview window
+  Escape    : if you want to exit without emerging anything
+  Available flags:
+  none : to interactively search for files in the portage tree to emerge
+  -d   : to interactively search for files by description in the portage tree to emerge
+  -u   : to interactively search for files in your world file to deselect
+  -h   : to show this help message
+
+HERE_EOF
   exit
 }
 
 emerge_finder() {
   EIX_LIMIT_COMPACT=0
 
-  local pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
+  pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
 
   if [ -z "$pkgpick" ]; then
     exit
   else
-    sudo emerge -v $(echo "$pkgpick")
+    # shellcheck disable=2116
+    sudo emerge -v $(printf '%s' "$pkgpick")
   fi
   exit
 }
@@ -91,33 +103,33 @@ emerge_finder() {
 emerge_finder_desc() {
   EIX_LIMIT_COMPACT=0
 
-  local pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --nth=2 --list-label='  Portage Tree  ')
+  descpkgpick=$(eix --color=always --pure-packages --compact -a | fzf --nth=2 --list-label='  Portage Tree  ')
 
-  if [ -z "$pkgpick" ]; then
+  if [ -z "$descpkgpick" ]; then
     exit
   else
-    sudo emerge -v $(echo "$pkgpick")
+    sudo emerge -v $(printf "%s" "$descpkgpick")
   fi
   exit
 }
 
 deselect_finder() {
-  local pkgpick=$(eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>' | fzf \
-      --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')
-  if [ -z "$pkgpick" ]; then
+  unpkgpick="$(eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>' | fzf \
+      --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
+  if [ -z "$unpkgpick" ]; then
     exit
   else
-    sudo emerge --ask --deselect $(echo -n "$pkgpick")
+    sudo emerge --ask --deselect $(printf "%s" "$unpkgpick")
   fi
   exit
 }
 
-while getopts "duh" flag; do
+while getopts ":duh" flag; do
   case $flag in
-    d) emerge_finder_desc && exit 0 ;;
-    u) deselect_finder && exit 0 ;;
-    h) help_msg && exit 0 ;;
-    \?) usage ;;
+    d) emerge_finder_desc;;
+    u) deselect_finder;;
+    h) help_msg;;
+    \?) usage >&2;;
   esac
 done
 
