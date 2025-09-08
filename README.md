@@ -6,15 +6,15 @@ to deselect.
 
 ### Launced in emerge mode:  
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ae05839-8473-488e-8b79-132a5b8dba6d" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/982969ba-e7e5-4b9f-85a3-6407a25bd4fe" />
 
 ### With the preview on the right:
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5913d065-a210-46d5-9310-01313f486e25" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/84e9f1fb-69eb-4e01-91c7-0ff54e98f52d" />
 
 ### Launched in deselect mode:
 
-<img width="1920" height="1080" alt="Jul-Tue-29-04:53" src="https://github.com/user-attachments/assets/e6c8dd45-4152-4ba8-b90c-b61ab1c0d562" />   
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b2bfbddd-ee1b-4f35-87dd-a64b2b0f9b8f" />
 
 ## Usage
 
