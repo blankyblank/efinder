@@ -59,6 +59,9 @@ Change the preview window to show dependencies with alt-d
 
 Change it to show use flags with alt-u.
 
+If the package is installed, you can use alt-f to show a tree view of all the 
+files installed by that package.
+
 It shows use flags by default in emerge mode, and dependencies by default
 in deselect mode.
 
