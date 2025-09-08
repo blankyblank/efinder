@@ -42,7 +42,7 @@ $ efinder -h
 when searching for packages in the portage tree, you can tell if a package is installed or not.
 They will have the version highlighted, and show the date they were emerged like ffmpeg here.
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3ea46f97-c91b-46bd-9418-e9df7eae8a5e" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/814db23e-fd33-4285-bcca-a9ccadaac246" />
 
 <br>
 
@@ -84,7 +84,7 @@ In this case it instead of getting results like these.
 
 <br>
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/58c73399-0487-4cca-8eb6-adfeb5dc885a" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0f446081-da60-4e6d-b883-edab44694fb0" />
 
 <br>
 
@@ -92,7 +92,7 @@ You narrow down the results to just those directly matching like so:
 
 <br>
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ff89f494-f6f2-4c95-974a-d16dd21344d4" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e962194a-509f-467d-95cc-e473d96c9cc3" />
 
 <br>
 
@@ -106,7 +106,8 @@ $ !sec
 
 <br>
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/30b1e113-dd21-40a2-9200-5aa6f8013072" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/86526c05-7353-41a0-bf45-35fa3c94b537" />
+
 
 <br>
 
@@ -123,7 +124,7 @@ And it will search for i3lock along with our first search like so:
 
 <br>
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/69365cee-0f00-48ad-9f78-40bf166015dc" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0916da65-e08e-42ea-ae56-431baf1fd105" />
 
 <br>
 
