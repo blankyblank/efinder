@@ -35,7 +35,7 @@ FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 -
   --preview-border=none --preview-label='Package Info' --preview-window 'top,44%' --preview='equery -N u -i {1}' \
   --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'  \
   --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}' \
-  --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery -N m {1}' --bind 'alt-f:preview:equery -N f --tree {1}' \
+  --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery m -U {1}' --bind 'alt-f:preview:equery -N f --tree {1}' \
   --bind 'alt-space:change-preview-window(right,45%|)' "
 
 usage() {
