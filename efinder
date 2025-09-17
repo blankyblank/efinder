@@ -2,33 +2,15 @@
 # shellcheck disable=2116
 # shellcheck disable=2046
 # shellcheck disable=2034
-
 set -a
 set -e
 set -u
 
-EIX_LIMIT=0
 EIX_LIMIT_COMPACT=0
-BG0=none;
-BG1=none;
-BG2=none;
-BG3=none;
 COLORSCHEME0=0;
 COLORSCHEME1=0;
 COLORSCHEME2=0;
 COLORSCHEME3=0;
-FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
-(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
-<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
-(%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}): {*modus=compact}(%{COLOR_NORMAL})\\((%{COLOR_NORMAL_END})\
-{havemarkedversion}<markedversions:MARKEDVERSION>; {}{installed}%{INSTALLEDVERSIONS_COMPACT}\
-{recommend} -> %{FORMAT_BEST_CHANGE}{}{else}%{FORMAT_BEST_COMPACT}{}(%{COLOR_NORMAL})\\) \
-<description>(%{COLOR_NORMAL_END})%{FORMAT_FINISH}"
-NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
-(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
-<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
-(%{COLOR_WORLD_SETS}){else}(bold;underline){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
-
 FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
   --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
   --margin=0% --padding=0% --border-label-pos=24 --list-border=rounded \
@@ -37,6 +19,58 @@ FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 -
   --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}' \
   --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery -N m {1}' --bind 'alt-f:preview:equery -N f --tree {1}' \
   --bind 'alt-space:change-preview-window(right,45%|)' "
+
+eix_install() {
+FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
+<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
+(%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}): {*modus=compact}(%{COLOR_NORMAL})\\((%{COLOR_NORMAL_END})\
+{havemarkedversion}<markedversions:MARKEDVERSION>; {}{installed}%{INSTALLEDVERSIONS_COMPACT}\
+{recommend} -> %{FORMAT_BEST_CHANGE}{}{else}%{FORMAT_BEST_COMPACT}{}(%{COLOR_NORMAL})\\) \
+<description>(%{COLOR_NORMAL_END})%{FORMAT_FINISH}"
+
+  eix --color=always --pure-packages --compact -a
+}
+
+eix_remove() {
+NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+(%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
+<category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
+(%{COLOR_WORLD_SETS}){else}(bold;underline){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
+
+  eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>'
+}
+
+emerge_finder() {
+  pkgpick=$(eix_install | fzf --list-label='  Portage Tree  ')
+  if [ -z "$pkgpick" ]; then
+    exit
+  else
+    sudo emerge -v $(printf '%s' "$pkgpick")
+  fi
+  exit
+}
+
+emerge_finder_desc() {
+  descpkgpick=$(eix_install | fzf --nth=2 --list-label='  Portage Tree  ')
+  if [ -z "$descpkgpick" ]; then
+    exit
+  else
+    sudo emerge -v $(printf "%s" "$descpkgpick")
+  fi
+  exit
+}
+
+deselect_finder() {
+  unpkgpick="$(eix_remove | fzf \
+      --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
+  if [ -z "$unpkgpick" ]; then
+    exit
+  else
+    sudo emerge --ask --deselect $(printf "%s" "$unpkgpick")
+  fi
+  exit
+}
 
 usage() {
   echo "invalid flag(s): $OPTARG"
@@ -83,37 +117,6 @@ help_msg() {
   -h   : to show this help message
 
 HERE_EOF
-  exit
-}
-
-emerge_finder() {
-  pkgpick=$(eix --color=always --pure-packages --compact -a | fzf --list-label='  Portage Tree  ')
-  if [ -z "$pkgpick" ]; then
-    exit
-  else
-    sudo emerge -v $(printf '%s' "$pkgpick")
-  fi
-  exit
-}
-
-emerge_finder_desc() {
-  descpkgpick=$(eix --color=always --pure-packages --compact -a | fzf --nth=2 --list-label='  Portage Tree  ')
-  if [ -z "$descpkgpick" ]; then
-    exit
-  else
-    sudo emerge -v $(printf "%s" "$descpkgpick")
-  fi
-  exit
-}
-
-deselect_finder() {
-  unpkgpick="$(eix --color=always --pure-packages --compact --world --format '<installedversions:NAMEVERSION>' | fzf \
-      --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
-  if [ -z "$unpkgpick" ]; then
-    exit
-  else
-    sudo emerge --ask --deselect $(printf "%s" "$unpkgpick")
-  fi
   exit
 }
 
