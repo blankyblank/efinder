@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 # shellcheck disable=2034
 set -aefu
-
 EIX_LIMIT_COMPACT=0
 COLORSCHEME0=0;
 COLORSCHEME1=0;
 COLORSCHEME2=0;
 COLORSCHEME3=0;
+
 FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
   --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
   --margin=0% --padding=0% --border-label-pos=24 --list-border=rounded \
