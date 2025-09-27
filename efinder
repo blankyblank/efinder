@@ -1,12 +1,13 @@
-#!/usr/bin/env sh
+#!/usr/bin/sh
 # shellcheck disable=2034
+# shellcheck disable=2086
 set -aefu
+
 EIX_LIMIT_COMPACT=0
 COLORSCHEME0=0;
 COLORSCHEME1=0;
 COLORSCHEME2=0;
 COLORSCHEME3=0;
-
 FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
   --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
   --margin=0% --padding=0% --border-label-pos=24 --list-border=rounded \
@@ -15,6 +16,61 @@ FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 -
   --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}' \
   --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery -N m {1}' --bind 'alt-f:preview:equery -N f --tree {1}' \
   --bind 'alt-space:change-preview-window(right,45%|)' "
+
+usage() {
+  cat <<-EOF
+	usgage: efinder [option]
+
+	A fzf script for portage.
+
+	Options:
+	  none              search for files in the portage tree to merge
+	  -d, --description search for files by their description to merge
+	  -u, --unmerge     search for files in your world file to deselect
+	  -h, --help        show a help message
+
+	EOF
+  exit 1
+}
+
+help_msg() {
+  cat <<-EOF
+	efinder
+	A fzf script for portage.
+	
+	running efinder with no options opens a fzf menu, of all the packages
+	available to you in your portage tree allowing you to select one
+  or multiple to merge
+	
+	the -u option shows the packages in your world file. Allowing you to
+	deselect one or multiple
+	
+	the default preview shows the use flags for the currently selected package.
+	When in unmerge mode preview will show the the package's dependencies.
+	
+	You can selected multiple packages in either mode with the tab key
+	then press enter to merge, or --deslect the chosen packages.
+
+	Usgage: efinder [option]
+
+	Options:
+	  none              search for files in the portage tree to merge
+	  -d, --description search for files by their description to merge
+	  -u, --unmerge     search for files in your world file to deselect
+	  -h, --help        show this help message
+
+	Keybinds:
+	  alt-p             toggle preview window
+	  alt-space         toggle preview position
+	  alt-u             preview use flags
+	  alt-d             preview dependencies
+	  alt-f             preview installed files
+	  alt-h             preview packaging info
+	  Escape            exit without taking any action
+	
+	EOF
+  exit
+}
 
 eix_install() {
 FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
@@ -42,7 +98,6 @@ emerge_finder() {
   if [ -z "$pkgpick" ]; then
     exit
   else
-  # shellcheck disable=2086
     sudo emerge -v $pkgpick
   fi
   exit
@@ -53,7 +108,6 @@ emerge_finder_desc() {
   if [ -z "$descpkgpick" ]; then
     exit
   else
-  # shellcheck disable=2086
     sudo emerge -v $descpkgpick
   fi
   exit
@@ -65,69 +119,52 @@ deselect_finder() {
   if [ -z "$unpkgpick" ]; then
     exit
   else
-  # shellcheck disable=2086
     sudo emerge --ask --deselect $unpkgpick
   fi
   exit
 }
 
-usage() {
-  echo "invalid flag(s): $OPTARG"
-  echo "usgage: efinder <option>"
-  echo "available options are"
-  echo "none : to interactively search for packages in the portage tree to emerge"
-  echo "-d   : to interactively search for packages by description in the portage tree to emerge"
-  echo "-u   : to interactively search for packages in your world file to deselect"
-  echo "-h   : to show a help message"
-  exit 1
-}
+if ! opts=$(getopt -s sh -o 'd,u,h' -l description,unmerge,help -n "efinder" -- "$@")
+then
+  usage >&2
+fi
 
-help_msg() {
-  cat << HERE_EOF
-  This is an interactive fuzzy finder for portage.
+eval set -- "$opts"
+unset opts
+_DEFAULT_=
+_DESC_=
+_UNMERG_=
+HALP=
 
-  With no options it will open a finder letting
-  you search through the packages available in the portage tree.
-
-  If you use the -u flag it will show the packages in your world file.
-  The chosen packages will be removed from the world file by emerge.
-
-  In the emerge script the default preview shows the use flags for the
-  currently selected package.
-  In the deselect script, the default preview will show the the package's
-  dependencies.
-
-  You can selected multiple packages in either mode with the tab key
-  then press enter to emerge, or --deslect the chosen packages.
-
-  It uses all the normal fzf key binds with a few extras added.
-  alt-p     : will toggle the preview window
-  alt-space : will toggle the preview position
-  alt-u     : will show use flags in the preview window
-  alt-d     : will show dependencies in the preview window
-  alt-f     : will list files of installed packages in the preview window
-  alt-h     : will show Upstream info in the preview window
-  Escape    : if you want to exit without emerging anything
-
-  Available flags:
-  none : to interactively search for files in the portage tree to emerge
-  -d   : to interactively search for files by description in the portage tree to emerge
-  -u   : to interactively search for files in your world file to deselect
-  -h   : to show this help message
-
-HERE_EOF
-  exit
-}
-
-while getopts ":duh" flag; do
-  case $flag in
-    d) emerge_finder_desc;;
-    u) deselect_finder;;
-    h) help_msg;;
-    \?) usage >&2;;
+while true; do
+  case "$1" in
+    -d | --description)
+      export _DESC_=true
+      break
+      ;;
+    -u | --unmerge)
+      export _UNMERG_=true
+      break
+      ;;
+    -h | --help)
+      export HALP=true
+      break
+      ;;
+    *)
+      export _DEFAULT_=true
+      break
+      ;;
   esac
 done
 
-if [ -n "$OPTIND" ]; then
+if [ -n "$_DEFAULT_" ]; then
   emerge_finder
+elif [ -n "$_DESC_" ]; then
+  emerge_finder_desc
+elif [ -n "$_UNMERG_" ]; then
+  deselect_finder
+elif [ -n "$HALP" ]; then
+  help_msg
+else 
+  usage >&2
 fi
