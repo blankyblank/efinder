@@ -8,14 +8,32 @@ COLORSCHEME0=0;
 COLORSCHEME1=0;
 COLORSCHEME2=0;
 COLORSCHEME3=0;
-FZF_DEFAULT_OPTS="--ansi --no-sort -m --reverse --cycle --wrap --scroll-off=20 --no-separator \
-  --delimiter : -n 1 --accept-nth=1 --info=inline-right  --pointer='>' --prompt='$ ' --marker='+' \
-  --margin=0% --padding=0% --border-label-pos=24 --list-border=rounded \
-  --preview-border=none --preview-label='Package Info' --preview-window 'top,44%' --preview='equery -N u -i {1}' \
-  --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'  \
-  --bind 'alt-u:preview:equery -N u -i {1}' --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}' \
-  --bind 'alt-p:toggle-preview' --bind 'alt-h:preview:equery -N m {1}' --bind 'alt-f:preview:equery -N f --tree {1}' \
-  --bind 'alt-space:change-preview-window(right,45%|)' "
+FZF_DEFAULT_OPTS="+s -m -d : -n 1\
+  --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'\
+  --ansi\
+  --cycle\
+  --wrap\
+  --accept-nth=1\
+  --pointer='>'\
+  --prompt='$ '\
+  --marker='+'\
+  --margin=0%\
+  --padding=0%\
+  --scroll-off=20\
+  --info=inline-right\
+  --no-separator\
+  --border-label-pos=24\
+  --list-border=top\
+  --preview-border=none\
+  --preview-label='Package Info'\
+  --preview-window 'top,44%'\
+  --preview='equery -N u -i {1}'\
+  --bind 'alt-u:preview:equery -N u -i {1}'\
+  --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}'\
+  --bind 'alt-p:toggle-preview'\
+  --bind 'alt-h:preview:equery -N m {1}'\
+  --bind 'alt-f:preview:equery -N f --tree {1}'\
+  --bind 'alt-space:change-preview-window(right,45%|)'"
 
 usage() {
   cat <<-EOF
@@ -98,7 +116,7 @@ emerge_finder() {
   if [ -z "$pkgpick" ]; then
     exit
   else
-    sudo emerge -v $pkgpick
+    sudo emerge  -av $pkgpick
   fi
   exit
 }
@@ -108,7 +126,7 @@ emerge_finder_desc() {
   if [ -z "$descpkgpick" ]; then
     exit
   else
-    sudo emerge -v $descpkgpick
+    sudo emerge -av $descpkgpick
   fi
   exit
 }
@@ -131,19 +149,17 @@ fi
 
 eval set -- "$opts"
 unset opts
-_DEFAULT_=
-_DESC_=
-_UNMERG_=
+_show=
 HALP=
 
 while true; do
   case "$1" in
     -d | --description)
-      export _DESC_=true
+      export _show=desc
       break
       ;;
     -u | --unmerge)
-      export _UNMERG_=true
+      export _show=unmerg
       break
       ;;
     -h | --help)
@@ -151,20 +167,27 @@ while true; do
       break
       ;;
     *)
-      export _DEFAULT_=true
+      export _show=default
       break
       ;;
   esac
 done
 
-if [ -n "$_DEFAULT_" ]; then
-  emerge_finder
-elif [ -n "$_DESC_" ]; then
-  emerge_finder_desc
-elif [ -n "$_UNMERG_" ]; then
-  deselect_finder
+if [ -n "$_show" ]; then
+  case "$_show" in
+    desc)
+      emerge_finder_desc
+      ;;
+    unmerg)
+      deselect_finder
+      ;;
+    default)
+      emerge_finder
+      ;;
+    *)
+      command ...
+      ;;
+  esac
 elif [ -n "$HALP" ]; then
   help_msg
-else 
-  usage >&2
 fi
