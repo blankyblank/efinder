@@ -4,10 +4,10 @@
 set -aefu
 
 EIX_LIMIT_COMPACT=0
-COLORSCHEME0=0;
-COLORSCHEME1=0;
-COLORSCHEME2=0;
-COLORSCHEME3=0;
+COLORSCHEME0=0
+COLORSCHEME1=0
+COLORSCHEME2=0
+COLORSCHEME3=0
 FZF_DEFAULT_OPTS="+s -m -d : -n 1\
   --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'\
   --ansi\
@@ -26,7 +26,7 @@ FZF_DEFAULT_OPTS="+s -m -d : -n 1\
   --list-border=top\
   --preview-border=none\
   --preview-label='Package Info'\
-  --preview-window 'top,44%'\
+  --preview-window 'top,54%'\
   --preview='equery -N u -i {1}'\
   --bind 'alt-u:preview:equery -N u -i {1}'\
   --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}'\
@@ -91,7 +91,7 @@ help_msg() {
 }
 
 eix_install() {
-FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+  FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
 (%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
 <category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
 (%{COLOR_WORLD_SETS}){else}(%{COLOR_NAME}){}{}{}<name>(%{COLOR_RESET}): {*modus=compact}(%{COLOR_NORMAL})\\((%{COLOR_NORMAL_END})\
@@ -103,7 +103,7 @@ FORMAT_ALL_COMPACT="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CA
 }
 
 eix_remove() {
-NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
+  NAMEVERSION="{system}(%{COLOR_CATEGORY_SYSTEM}){else}{profile}(%{COLOR_CATEGORY_PROFILE}){else}{world}\
 (%{COLOR_CATEGORY_WORLD}){else}{world_sets}(%{COLOR_CATEGORY_WORLD_SETS}){else}(%{COLOR_CATEGORY}){}{}{}{}\
 <category>/(%{COLOR_NORMAL}){marked}(%{COLOR_MARKED_NAME}){else}{world}(%{COLOR_WORLD}){else}{world_sets}\
 (%{COLOR_WORLD_SETS}){else}(bold;underline){}{}{}<name>(%{COLOR_RESET}):<version> <description> \n"
@@ -116,7 +116,7 @@ emerge_finder() {
   if [ -z "$pkgpick" ]; then
     exit
   else
-    sudo emerge  -av $pkgpick
+    sudo emerge -av $pkgpick
   fi
   exit
 }
@@ -133,7 +133,7 @@ emerge_finder_desc() {
 
 deselect_finder() {
   unpkgpick="$(eix_remove | fzf \
-      --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
+    --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
   if [ -z "$unpkgpick" ]; then
     exit
   else
@@ -142,8 +142,7 @@ deselect_finder() {
   exit
 }
 
-if ! opts=$(getopt -s sh -o 'd,u,h' -l description,unmerge,help -n "efinder" -- "$@")
-then
+if ! opts=$(getopt -s sh -o 'd,u,h' -l description,unmerge,help -n "efinder" -- "$@"); then
   usage >&2
 fi
 
@@ -154,39 +153,39 @@ HALP=
 
 while true; do
   case "$1" in
-    -d | --description)
-      export _show=desc
-      break
-      ;;
-    -u | --unmerge)
-      export _show=unmerg
-      break
-      ;;
-    -h | --help)
-      export HALP=true
-      break
-      ;;
-    *)
-      export _show=default
-      break
-      ;;
+  -d | --description)
+    export _show=desc
+    break
+    ;;
+  -u | --unmerge)
+    export _show=unmerg
+    break
+    ;;
+  -h | --help)
+    export HALP=true
+    break
+    ;;
+  *)
+    export _show=default
+    break
+    ;;
   esac
 done
 
 if [ -n "$_show" ]; then
   case "$_show" in
-    desc)
-      emerge_finder_desc
-      ;;
-    unmerg)
-      deselect_finder
-      ;;
-    default)
-      emerge_finder
-      ;;
-    *)
-      command ...
-      ;;
+  desc)
+    emerge_finder_desc
+    ;;
+  unmerg)
+    deselect_finder
+    ;;
+  default)
+    emerge_finder
+    ;;
+  *)
+    command ...
+    ;;
   esac
 elif [ -n "$HALP" ]; then
   help_msg
