@@ -11,6 +11,7 @@ COLORSCHEME3=0
 FZF_DEFAULT_OPTS="+s -m -d : -n 1\
   --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'\
   --ansi\
+  --reverse\
   --cycle\
   --wrap\
   --accept-nth=1\
