@@ -11,7 +11,6 @@ COLORSCHEME3=0
 FZF_DEFAULT_OPTS="+s -m -d : -n 1\
   --color='16,hl:5, current-hl:5, gap-line:8, input-border:5, prompt:5, spinner:5, pointer:5, selected-hl:5, gutter:-1'\
   --ansi\
-  --reverse\
   --cycle\
   --wrap\
   --accept-nth=1\
@@ -68,7 +67,7 @@ help_msg() {
 	When in unmerge mode preview will show the the package's dependencies.
 	
 	You can selected multiple packages in either mode with the tab key
-	then press enter to merge, or --deslect the chosen packages.
+	then press enter to merge, or --deselect the chosen packages.
 
 	Usgage: efinder [option]
 
@@ -133,8 +132,9 @@ emerge_finder_desc() {
 }
 
 deselect_finder() {
-  unpkgpick="$(eix_remove | fzf \
+  unpkgpick="$(eix_remove | fzf --reverse --preview-window 'top,40%' \
     --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
+
   if [ -z "$unpkgpick" ]; then
     exit
   else
