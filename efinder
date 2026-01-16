@@ -133,7 +133,7 @@ emerge_finder_desc() {
 
 deselect_finder() {
   unpkgpick="$(eix_remove | fzf --reverse --preview-window 'top,40%' \
-    --preview='qdepends -qdrpbIQ --color {1}' --list-label='  World File  ')"
+    --preview='qdepends -Qq --color {1}' --list-label='  World File  ')"
 
   if [ -z "$unpkgpick" ]; then
     exit
