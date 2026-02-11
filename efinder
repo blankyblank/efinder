@@ -26,7 +26,7 @@ FZF_DEFAULT_OPTS="+s -m -d : -n 1\
   --list-border=top\
   --preview-border=none\
   --preview-label='Package Info'\
-  --preview-window 'top,50%'\
+  --preview-window 'top,46%'\
   --preview='equery -N u -i {1}'\
   --bind 'alt-u:preview:equery -N u -i {1}'\
   --bind 'alt-d:preview:qdepends -qdrpbIQ --color {1}'\
