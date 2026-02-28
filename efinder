@@ -43,8 +43,8 @@ usage() {
 
 	Options:
 	  none              search for files in the portage tree to merge
-	  -d, --description search for files by their description to merge
-	  -u, --unmerge     search for files in your world file to deselect
+	  -d, --deselect    search for files in your world file to deselect
+	  -D, --description search for files by their description to merge
 	  -h, --help        show a help message
 
 	EOF
@@ -64,7 +64,7 @@ help_msg() {
 	deselect one or multiple
 	
 	the default preview shows the use flags for the currently selected package.
-	When in unmerge mode preview will show the the package's dependencies.
+	When in deselect mode preview will show the the package's dependencies.
 	
 	You can selected multiple packages in either mode with the tab key
 	then press enter to merge, or --deselect the chosen packages.
@@ -73,8 +73,8 @@ help_msg() {
 
 	Options:
 	  none              search for files in the portage tree to merge
-	  -d, --description search for files by their description to merge
-	  -u, --unmerge     search for files in your world file to deselect
+	  -d, --deselect    search for files in your world file to deselect
+	  -D, --description search for files by their description to merge
 	  -h, --help        show this help message
 
 	Keybinds:
@@ -143,7 +143,7 @@ deselect_finder() {
   exit
 }
 
-if ! opts=$(getopt -s sh -o 'd,u,h' -l description,unmerge,help -n "efinder" -- "$@"); then
+if ! opts=$(getopt -s sh -o 'd,D,h' -l deselect,description,help -n "efinder" -- "$@"); then
   usage >&2
 fi
 
@@ -154,12 +154,12 @@ HALP=
 
 while true; do
   case "$1" in
-  -d | --description)
+  -d | --deselect)
     export _show=desc
     break
     ;;
-  -u | --unmerge)
-    export _show=unmerg
+  -D | --description)
+    export _show=deselect
     break
     ;;
   -h | --help)
@@ -178,7 +178,7 @@ if [ -n "$_show" ]; then
   desc)
     emerge_finder_desc
     ;;
-  unmerg)
+  deselect)
     deselect_finder
     ;;
   default)
