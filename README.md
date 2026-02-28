@@ -27,16 +27,16 @@ $ efinder
 ```
 To search through the packages available in your portage tree, searching by description.
 ```bash
-$ efinder -d
+$ efinder -D
     or
 $ efinder --description
 ```
 To look through your world file for packages to deselect 
 (or just search through your world file if you press escape it exits)
 ```bash
-$ efinder -u
+$ efinder -d
     or
-$ efinder --unmerge
+$ efinder --deselect
 ```
 for a help message with the extra keybinds
 ```bash
