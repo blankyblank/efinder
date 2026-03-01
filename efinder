@@ -155,11 +155,11 @@ HALP=
 while true; do
   case "$1" in
   -d | --deselect)
-    export _show=desc
+    export _show=deselect
     break
     ;;
   -D | --description)
-    export _show=deselect
+    export _show=desc
     break
     ;;
   -h | --help)
