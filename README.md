@@ -1,10 +1,10 @@
 # efinder
 
 A script using fzf on Gentoo, to search the available packages in your portage
-tree and install them. Or search your world file, and pick packages 
+tree and install them. Or search your world file, and pick packages
 to deselect.
 
-### Launced in emerge mode:  
+### Launced in emerge mode:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/982969ba-e7e5-4b9f-85a3-6407a25bd4fe" />
 
@@ -18,27 +18,34 @@ to deselect.
 
 ## Usage
 
-When launched by default with no options it will emerge packages, with -u it will deselect them from your world file.  
+When launched by default with no options it will emerge packages, with -u it will deselect them from your world file.
 
 Usage:
 To search through the packages available in your portage tree.
+
 ```bash
 $ efinder
 ```
+
 To search through the packages available in your portage tree, searching by description.
+
 ```bash
 $ efinder -D
     or
 $ efinder --description
 ```
-To look through your world file for packages to deselect 
+
+To look through your world file for packages to deselect
 (or just search through your world file if you press escape it exits)
+
 ```bash
 $ efinder -d
     or
 $ efinder --deselect
 ```
+
 for a help message with the extra keybinds
+
 ```bash
 $ efinder -h
     or
@@ -57,7 +64,7 @@ They will have the version highlighted, and show the date they were emerged like
 You can use tab to select multiple packages, then press enter.
 To exit without selecting anything to emerge, or deselect press Escape.
 
-Toggle the preview window with alt-p. 
+Toggle the preview window with alt-p.
 
 Toggle the preview window position with alt-space.
 
@@ -65,7 +72,7 @@ Change the preview window to show dependencies with alt-d
 
 Change it to show use flags with alt-u.
 
-If the package is installed, you can use alt-f to show a tree view of all the 
+If the package is installed, you can use alt-f to show a tree view of all the
 files installed by that package.
 
 It shows use flags by default in emerge mode, and dependencies by default
@@ -79,11 +86,13 @@ When you have efinder open to change the way fzf searches you can use a few diff
 
 By quoting a string you will enable exact-match mode.
 Meaning if you quote your search it will search for that exact string instead of fuzzy searching.
-like so 
+like so
+
 ```
 $ 'dwm
 ```
-Adding the single quote can be especially useful for short strings like this. 
+
+Adding the single quote can be especially useful for short strings like this.
 Because otherwise it might not narrow the results down enough.
 
 In this case it instead of getting results like these.
@@ -105,7 +114,6 @@ You narrow down the results to just those directly matching like so:
 To add another example of how to modify search results. You can use an exclamation mark to exclude results matching what comes after it.
 So if you were to add this, to the search in the above example.
 
-
 ```
 $ !sec
 ```
@@ -113,7 +121,6 @@ $ !sec
 <br>
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/86526c05-7353-41a0-bf45-35fa3c94b537" />
-
 
 <br>
 
@@ -126,6 +133,7 @@ To show an example we can take the same search as before for dwm. And add this a
 ```
 $ 'dwm | i3lock
 ```
+
 And it will search for i3lock along with our first search like so:
 
 <br>
@@ -138,17 +146,17 @@ Here are some useful keybinds built into fzf.
 
 If you like using vim like motions you can move up and down with
 
-* control-j : to move down
+- control-j : to move down
 
-* control-k : to move up
+- control-k : to move up
 
 If you want to scroll up and down in the preview window you can press.
 
-* control-up : To scroll up
+- control-up : To scroll up
 
-* control-down : To scroll down
+- control-down : To scroll down
 
-As mentioned above you can select multiple Items by hitting the tab key. To deselect those  you just move back up and hit tab again.
+As mentioned above you can select multiple Items by hitting the tab key. To deselect those you just move back up and hit tab again.
 
 You can press Escape to exit the script without taking any action.
 
@@ -175,42 +183,53 @@ Dependencies:
 
 <br>
 
-### Using the install.sh for installation.
-
-<br>
-
 First git clone the repo wherever you would like to my suggestion is ~/.local/src
+
 ```
 $ git clone https://github.com/blankyblank/efinder.git
 ```
+
 ```
 $ cd efinder
 ```
+
 If you want to use a stable release instead of the main branch.
+
 ```
 $ git checkout v0.1beta
 ```
+
 to install it as a normal user.
+
 ```
-$ ./install.sh -i
+$ make install-local
 ```
-then add .local/bin to your path, in your shell config file like so
+
+then add .local/bin to your path, in your shell config file like so. If it isn't already set.
 ~/.bashrc
+
 ```
 PATH=$PATH:"$HOME"/.local/bin
 ```
+
 To install it system wide you just need to use sudo and it will be placed in /usr/local/bin
+
 ```
-$ sudo ./install.sh -i
+$ sudo make install
 ```
-To uninstall 
+
+To uninstall
+
 ```
-$ ./install.sh -u
+$ make uninstall-local
 ```
+
 or systemwide
+
 ```
-$ sudo ./install.sh -u
+$ sudo make uninstall
 ```
+
 <br>
 
 ### Manual installation
@@ -218,6 +237,7 @@ $ sudo ./install.sh -u
 <br>
 
 To install it either git clone the repo
+
 ```
 $ git clone https://github.com/blankyblank/efinder.git
 ```
@@ -229,21 +249,27 @@ If you cloned it, change directories to where you cloned it with
 ```
 $ cd efinder
 ```
+
 If you want to use a stable release instead of the main branch.
+
 ```
 $ git checkout v0.1beta
 ```
 
 Make it executable with
+
 ```
 $ chmod +x efinder
 ```
+
 Then add it somewhere on your path. My recommendation is:
 
 If it doesn't already exist
+
 ```
 $ mkdir ~/.local/bin
 ```
+
 Add to your .bash_profile, or .bashrc (or whatever shell you use.)
 
 ```
@@ -251,12 +277,15 @@ PATH=$PATH:"$HOME"/.local/bin
 ```
 
 Then move efinder to that directory.
+
 ```
 $ mv efinder ~/.local/bin
 ```
+
 If you git cloned it you can make a symlink to it.
 You will use the full path to the efinder script. So if it's currently in
 your home direcory in the cloned git repo
+
 ```
 $ ln -s ~/efinder/efinder ~/.local/bin/
 ```
