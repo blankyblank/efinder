@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 # shellcheck disable=2034
 # shellcheck disable=2086
-set -aefu
+set -afu
 
 EIX_LIMIT_COMPACT=0
 COLORSCHEME0=0
@@ -119,6 +119,7 @@ emerge_finder() {
     preserve_stty=$(stty -g)
     stty sane </dev/tty
     sudo emerge -av $pkgpick
+    exec stty "$preserve_stty"
   fi
   exit
 }
@@ -131,6 +132,7 @@ emerge_finder_desc() {
     preserve_stty=$(stty -g)
     stty sane </dev/tty
     sudo emerge -av $descpkgpick
+    exec stty "$preserve_stty"
   fi
   exit
 }
@@ -145,6 +147,7 @@ deselect_finder() {
     preserve_stty=$(stty -g)
     stty sane </dev/tty
     sudo emerge --ask --deselect $unpkgpick
+    exec stty "$preserve_stty"
   fi
   exit
 }
@@ -198,4 +201,4 @@ elif [ -n "$HALP" ]; then
   help_msg
 fi
 
-exec stty "$preserve_stty"
+# exec stty "$preserve_stty"
